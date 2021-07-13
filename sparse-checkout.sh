@@ -2,18 +2,15 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-ls $GITHUB_WORKSPACE
-
-mkdir -p protos
-cd protos
-
+mkdir -p /proto
+cd /proto
 git init
 git config --local gc.auto 0
 git config core.sparseCheckout true
-cp $GITHUB_WORKSPACE/${MODULE_LIST_FILE_PATH} .git/info/sparse-checkout
-git remote add origin https://github.com/${GIT_URL}
-git -c protocol.version=2 fetch --no-tags --prune --progress --depth=1 origin ${PROTO_BRANCH}
-git checkout --progress --force -B ${PROTO_BRANCH} origin/${PROTO_BRANCH}
+GIT_TOKEN=$INPUT_GIT_TOKEN
+cp $GITHUB_WORKSPACE/${INPUT_MODULE_LIST_FILE_PATH} .git/info/sparse-checkout
+git remote add origin https://${INPUT_GIT_TOKEN}@github.com/${INPUT_PROTO_REPOSITORY}
+git -c protocol.version=2 fetch --no-tags --prune --progress --depth=1 origin ${INPUT_PROTO_BRANCH}
+git checkout --progress --force -B ${INPUT_PROTO_BRANCH} origin/${INPUT_PROTO_BRANCH}
 
-ls $GITHUB_WORKSPACE
-ls $GITHUB_WORKSPACE/protos
+cd /

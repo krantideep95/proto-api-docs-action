@@ -4,53 +4,44 @@ inputs:
   GIT_TOKEN:
     description: 'git token to use for clone protobuf repository'
     required: true
-  GIT_URL:  # id of input
+  GIT_URL:
     description: 'git repo url'
     required: true
-  PROTO_BRANCH:  # id of input
+  PROTO_BRANCH:
     description: 'branch to clone'
     required: true
   MODULE_LIST_FILE_PATH:
     description: 'path to file containing module list of protos to checkout'
     required: true
+  AWS_S3_BUCKET:
+    description: 's3 bucket name'
+    required: true
+  AWS_ACCESS_KEY_ID:
+    description: 'aws access key id'
+    required: true
+  AWS_SECRET_ACCESS_KEY:
+    description: 'aws access key secret'
+    required: true
+  AWS_REGION:
+    description: 'aws region'
+    required: true
+  SOURCE_DIR:
+    description: 'source directory'
+    required: true
+  DEST_DIR:
+    description: 'destination directory'
+    required: true
 runs:
-  using: "composite"
-  steps:
-    - run: ${{ github.action_path }}/sparse-checkout.sh
-      shell: bash
-      env:
-        GIT_TOKEN: ${{ inputs.GIT_TOKEN }}
-        GIT_URL: ${{ inputs.GIT_URL }}
-        PROTO_BRANCH: ${{ inputs.PROTO_BRANCH }}
-        MODULE_LIST_FILE_PATH: ${{ inputs.MODULE_LIST_FILE_PATH }}
-    - run: wget -q -O - https://raw.githubusercontent.com/canha/golang-tools-install-script/ae1eb678364ce9fd74a9ea520f532c176087ff39/goinstall.sh | bash
-      shell: bash
-    - run: go version
-      shell: bash
-    # - name: Sparse checkout
-    #   shell: bash
-    #   run: |
-    #     REPO="https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-    #     BRANCH="${GITHUB_REF/#refs\/heads\//}"
-
-    #     # Following code is based on logs of actions/checkout@v, with sparseCheckout stuff inserted in the middle
-    #     echo "Syncing repository: $GITHUB_REPOSITORY"
-    #     echo "Working directory is '$(pwd)' GITHUB_WORKSPACE=$GITHUB_WORKSPACE BRANCH=$BRANCH"
-    #     git version
-    #     git init $GITHUB_WORKSPACE
-    #     git remote add origin https://github.com/$GITHUB_REPOSITORY
-    #     git config --local gc.auto 0
-    #     # Now interesting part
-    #     git config core.sparseCheckout true
-    #     # Add here contents of sparse-checkout line by line
-    #     echo "..." >> .git/info/sparse-checkout
-    #     # echo ...
-    #     git -c protocol.version=2 fetch --no-tags --prune --progress --depth=10 origin +${GITHUB_SHA}:refs/remotes/origin/${BRANCH}
-    #     git checkout --progress --force -B $BRANCH refs/remotes/origin/$BRANCH
-    # - run: echo Hello ${{ inputs.who-to-greet }}.
-    #   shell: bash
-    # - id: random-number-generator
-    #   run: echo "::set-output name=random-id::$(echo $RANDOM)"
-    #   shell: bash
-    # - run: ${{ github.action_path }}/goodbye.sh
-    #   shell: bash
+  using: "docker"
+  image: 'Dockerfile'
+  args:
+      - ${{ inputs.GIT_TOKEN }}
+        ${{ inputs.GIT_URL }}
+        ${{ inputs.PROTO_BRANCH }}
+        ${{ inputs.MODULE_LIST_FILE_PATH }}
+        ${{ inputs.AWS_S3_BUCKET}}
+        ${{ inputs.AWS_ACCESS_KEY_ID}}
+        ${{ inputs.AWS_SECRET_ACCESS_KEY}}
+        ${{ inputs.AWS_REGION}}
+        ${{ inputs.SOURCE_DIR}}
+        ${{ inputs.DEST_DIR}}

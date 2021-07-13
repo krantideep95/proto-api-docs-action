@@ -1,0 +1,12 @@
+version: v1beta1
+plugins:
+  - name: openapiv2
+    out: docs
+    opt:
+      - generate_unbound_methods=true
+      - disable_default_errors=true
+      - allow_merge=false
+      - include_package_in_tags=false
+      - json_names_for_fields=false
+      - include_package_in_tags=true
+      - fqn_for_openapi_name=true
