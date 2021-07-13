@@ -2,16 +2,16 @@ name: 'proto api docs'
 description: 'Generate swagger api docs from protobuf & push them to a s3 bucket'
 inputs:
   GIT_TOKEN:
-    description: 'git token to use for clone protobuf repository'
+    description: 'git token to use for cloning the repository containing the protobuf files'
     required: true
-  GIT_URL:
-    description: 'git repo url'
+  PROTO_REPOSITORY:
+    description: 'protobuf files github repository including the org name'
     required: true
   PROTO_BRANCH:
     description: 'branch to clone'
     required: true
   MODULE_LIST_FILE_PATH:
-    description: 'path to file containing module list of protos to checkout'
+    description: 'path to file containing list of subdirectories of protos to clone'
     required: true
   AWS_S3_BUCKET:
     description: 's3 bucket name'
@@ -29,14 +29,14 @@ inputs:
     description: 'source directory'
     required: true
   DEST_DIR:
-    description: 'destination directory'
+    description: 'destination s3 directory'
     required: true
 runs:
   using: "docker"
   image: 'Dockerfile'
   args:
       - ${{ inputs.GIT_TOKEN }}
-        ${{ inputs.GIT_URL }}
+        ${{ inputs.PROTO_REPOSITORY }}
         ${{ inputs.PROTO_BRANCH }}
         ${{ inputs.MODULE_LIST_FILE_PATH }}
         ${{ inputs.AWS_S3_BUCKET}}
