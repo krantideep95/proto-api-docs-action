@@ -1,5 +1,8 @@
 name: 'proto api docs'
 description: 'Generate swagger api docs from protobuf & push them to a s3 bucket'
+branding:
+  icon: 'edit-3'
+  color: 'gray-dark'
 inputs:
   GIT_TOKEN:
     description: 'git token to use for cloning the repository containing the protobuf files'
