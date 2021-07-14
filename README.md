@@ -60,3 +60,38 @@ NA
     AWS_REGION: ap-south-1
     DEST_DIR: _docs
 ```
+
+## FAQs
+
+### Will it work with twirp?
+
+Short Answer: Yes, with a few quirks.
+
+Long Answer: proto-gen-openapiv2 plugin is meant to be used with grpc-gateway protobuf files. It is not meant to be used with twirp. twirp officially doesn't support a plugin to generate swagger api docs. By enabling a few options in plugin, this action can be used to generate swagger api docs for twirp. You can use following proto definitions in one of the files to make this compatible with twirp:
+```protobuf
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  schemes: HTTPS;
+  host: "base url";
+  base_path: "/twirp/";
+  security: {
+    security_requirement :{
+      key: "BasicAuth";
+      value: {};
+    }
+  }
+  security_definitions: {
+    security: {
+      key: "BasicAuth";
+      value: {
+        type: TYPE_BASIC;
+      }
+    }
+}
+};
+```
+
+### Should this be used in a common protobuf repo or different backend service specific repos ?
+
+Usually, 1 backend service exposes different sub-domains' APIs in 1 deployment. For such cases, it makes sense to use this action separately in that backend service's repo.
