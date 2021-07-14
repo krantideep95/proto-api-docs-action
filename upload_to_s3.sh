@@ -37,9 +37,10 @@ ${INPUT_AWS_REGION}
 text
 EOF
 
+SOURCE_DIR=/_docs
 # Sync using our dedicated profile and suppress verbose messages.
 # All other flags are optional via the `args:` directive.
-sh -c "aws s3 sync ${INPUT_SOURCE_DIR:-.} s3://${INPUT_AWS_S3_BUCKET}/${INPUT_DEST_DIR} \
+sh -c "aws s3 sync ${SOURCE_DIR} s3://${INPUT_AWS_S3_BUCKET}/${INPUT_DEST_DIR} \
               --profile s3-sync-action \
               --no-progress \
               ${INPUT_ENDPOINT_APPEND} $*"

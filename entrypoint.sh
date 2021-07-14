@@ -13,5 +13,6 @@ bash /combine_swagger_docs.sh /docs
 echo "create repo/branch dir structure"
 mkdir -p /_docs/${GITHUB_REPOSITORY#*/} && mv combined.json /_docs/${GITHUB_REPOSITORY#*/}/${GITHUB_REF##*/}.json
 
+
 echo "upload to s3"
 bash /upload_to_s3.sh

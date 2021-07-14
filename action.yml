@@ -28,9 +28,6 @@ inputs:
   AWS_REGION:
     description: 'aws region'
     required: true
-  SOURCE_DIR:
-    description: 'source directory'
-    required: true
   DEST_DIR:
     description: 'destination s3 directory'
     required: true
@@ -46,5 +43,4 @@ runs:
         ${{ inputs.AWS_ACCESS_KEY_ID}}
         ${{ inputs.AWS_SECRET_ACCESS_KEY}}
         ${{ inputs.AWS_REGION}}
-        ${{ inputs.SOURCE_DIR}}
         ${{ inputs.DEST_DIR}}

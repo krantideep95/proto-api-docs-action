@@ -36,13 +36,11 @@ This action clones protobuf files from a (public/private) github repository, gen
 
 **Required** aws region
 
-### SOURCE_DIR:
-
-**Required** source directory
-
 ### DEST_DIR:
 
 **Required** destination s3 directory
+
+another directory will be created in the destination directory with the name of the repository running this action. The generated documentation will be uploaded to this directory with branch name as the name of the file.
 
 ## Outputs
 NA
@@ -50,7 +48,7 @@ NA
 ## Example usage
 ```yaml
 - uses: actions/checkout@v2
-- uses: krantideep95/proto-api-docs-action@master
+- uses: krantideep95/proto-api-docs-action@v0.2.0
   with:
     GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
     PROTO_REPOSITORY: krantideep95/proto
@@ -60,6 +58,5 @@ NA
     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     AWS_REGION: ap-south-1
-    SOURCE_DIR: /_docs
     DEST_DIR: _docs
 ```
